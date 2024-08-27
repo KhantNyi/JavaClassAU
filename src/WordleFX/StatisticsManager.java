@@ -16,18 +16,22 @@ public class StatisticsManager {
 
     public void incrementGamesPlayed() {
         gamesPlayed++;
+        System.out.println("Games Played: " + gamesPlayed); // Debugging statement
     }
 
     public void incrementWins() {
         wins++;
+        System.out.println("Wins: " + wins); // Debugging statement
     }
 
     public void incrementLosses() {
         losses++;
+        System.out.println("Losses: " + losses); // Debugging statement
     }
 
     public void addGuessesForWin(int guesses) {
         totalGuessesForWins += guesses;
+        System.out.println("Total Guesses for Wins: " + totalGuessesForWins); // Debugging statement
     }
 
     public String getStatistics() {
