@@ -12,16 +12,15 @@ public class Main extends Application {
         primaryStage.setTitle("Wordle With Friends");
 
         StatisticsManager statisticsManager = new StatisticsManager();
-        UIManager uiManager = new UIManager();
-        WordleGame wordleGame = new WordleGame(uiManager, statisticsManager);
-        
-        // Pass the wordleGame reference to the UIManager
+        UIManager uiManager = new UIManager(statisticsManager);
+        WordValidator wordValidator = new WordValidator();
+        WordleGame wordleGame = new WordleGame(uiManager, statisticsManager, wordValidator);
+
         uiManager.setWordleGame(wordleGame);
 
         VBox root = uiManager.createGameLayout();
-
         Scene scene = new Scene(root);
-        
+
         primaryStage.setScene(scene);
         primaryStage.setMinWidth(800);
         primaryStage.setMinHeight(1000);
