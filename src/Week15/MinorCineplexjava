@@ -1,0 +1,129 @@
+package Cineplex;
+
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class MinorCineplex {
+
+    private static ArrayList<Theatre> theatres = new ArrayList<Theatre>();
+    private static Scanner scanner = new Scanner(System.in);
+
+    public static void main(String[] args) {
+        String title = "The Mummy";
+        theatres.add(new StandardTheatre(title));
+        theatres.add(new StandardTheatre(title));
+        theatres.add(new StandardTheatre(title));
+        theatres.add(new PremiumTheatre(title));
+
+        boolean running = true;
+        while (running) {
+            displayMenu();
+            int choice = getMenuChoice();
+            switch (choice) {
+                case 1:
+                    bookSeat();
+                    break;
+                case 2:
+                    editMovieTitle();
+                    break;
+                case 3:
+                    viewSalesReport();
+                    break;
+                case 4:
+                    running = false;
+                    System.out.println("You have exited the progam.!");
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please try again. (1 - 4)");
+            }
+        }
+        scanner.close();
+    }
+
+    private static void displayMenu() {
+        System.out.println("\n--- Minor Cineplex Booking System ---");
+        System.out.println("1. Book a seat");
+        System.out.println("2. Edit movie title");
+        System.out.println("3. View sales report");
+        System.out.println("4. Exit the program");
+        System.out.print("Enter your choice: ");
+    }
+
+    private static int getMenuChoice() {
+        while (!scanner.hasNextInt()) {
+            System.out.println("That's not a valid input. Please try again. (1 - 4)");
+            scanner.next();
+        }
+        return scanner.nextInt();
+    }
+
+    private static void bookSeat() {
+        System.out.print("Enter theatre number (1-4): ");
+        int theatreNumber = scanner.nextInt();
+        System.out.print("Enter row number: ");
+        int row = scanner.nextInt();
+        System.out.print("Enter seat number: ");
+        int seat = scanner.nextInt();
+
+        if (theatreNumber < 1 || theatreNumber > 4) {
+            System.out.println("Invalid theatre number. Please try again.");
+            return;
+        }
+
+        Theatre theatre = theatres.get(theatreNumber - 1);
+        boolean booked = theatre.book(row - 1, seat - 1);
+        if (booked) {
+            System.out.println("Booking successful!");
+        } else {
+            System.out.println("Booking failed. The seat might be already taken or invalid.");
+        }
+    }
+
+    private static void editMovieTitle() {
+        scanner.nextLine();
+        System.out.print("Enter new movie title: ");
+        String newTitle = scanner.nextLine();
+        for (Theatre theatre : theatres) {
+            theatre.setMovieTitle(newTitle);
+        }
+        System.out.println("Movie title updated successfully.");
+    }
+
+    private static void viewSalesReport() {
+        System.out.println("\n--- Sales Report ---");
+        System.out.println("Movie Title: " + theatres.get(0).getMovieTitle());
+        for (int i = 1; i <= theatres.size(); i++) {
+            System.out.println("Theatre " + i + ":");
+            System.out.println("  Tickets Sold: " + getTotalTicketsSold(i));
+            System.out.println("  Revenue: " + getTotalRevenue(i) + " THB");
+        }
+        System.out.println("Total Tickets Sold: " + getTotalTicketsSold());
+        System.out.println("Total Revenue: " + getTotalRevenue() + " THB");
+    }
+
+    // Existing methods
+
+    public static int getTotalRevenue(int theatreNumber) {
+        return theatres.get(theatreNumber - 1).getRevenue();
+    }
+
+    public static int getTotalRevenue() {
+        int totalRevenue = 0;
+        for (Theatre theatre : theatres) {
+            totalRevenue += theatre.getRevenue();
+        }
+        return totalRevenue;
+    }
+
+    public static int getTotalTicketsSold(int theatreNumber) {
+        return theatres.get(theatreNumber - 1).getNumberOfTicketsSold();
+    }
+
+    public static int getTotalTicketsSold() {
+        int totalTicketsSold = 0;
+        for (Theatre theatre : theatres) {
+            totalTicketsSold += theatre.getNumberOfTicketsSold();
+        }
+        return totalTicketsSold;
+    }
+}
